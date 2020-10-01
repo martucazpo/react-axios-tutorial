@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
@@ -7,11 +7,15 @@ const api = axios.create({
   baseURL: 'http://localhost:8000/courses/'
 });
 
+
 function App() {
+
+const [data, setData] = useState([]);
 
 function getdata(){
   api.get('/').then(res => {
     console.log(res.data);
+    setData(res.data);
   });
 }
 getdata();
@@ -19,6 +23,7 @@ getdata();
   return (
     <div className="App">
       <header className="App-header">
+        {data.map(data => <h2 key={data.id}>{data.title}</h2>)}
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
