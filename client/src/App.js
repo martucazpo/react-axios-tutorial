@@ -1,25 +1,17 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import axios from 'axios';
-
-const api = axios.create({
-  baseURL: 'http://localhost:8000/courses/'
-});
+import API from './utils/API';
 
 
 function App() {
 
-const [data, setData] = useState([]);
+  const [data, setData] = useState([]);
 
-function getdata(){
-  api.get('/').then(res => {
-    console.log(res.data);
-    setData(res.data);
-  });
-}
-getdata();
-
+  API.getData().then(
+    data =>  setData(data.data)
+  ).catch(err => console.log(err));
+  
   return (
     <div className="App">
       <header className="App-header">
