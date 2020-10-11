@@ -1,5 +1,4 @@
 const router = require('express').Router();
-//const data = require('../data.json');
 const DataDemo = require('../models/DemoData');
 
 router.get('/courses', (req, res) => {
@@ -7,43 +6,44 @@ router.get('/courses', (req, res) => {
         if (err) {
             console.log(err);
         } else {
-         res.send(data);
+         res.json(data);
         }
     });
 });
 
-// router.get('/addData', (req, res) => {
-//     let data = [{
-//             "id": 1,
-//             "title": "Axios React",
-//             "author": "Adrian Twarog",
-//             "developer": "Mr. Pipes"
-//         },
-//         {
-//             "id": 2,
-//             "title": "Blah, blah, React Native",
-//             "author": "Adrian Twarog"
-//         },
-//         {
-//             "id": 3,
-//             "title": "Some Axios Javascript Thingy",
-//             "author": "Adrian Twarog"
-//         }];
-//     let newData = [...data];
-//     for (let i = 0; i < newData.length; i++) {
-//         let id = newData[i].id;
-//         let title = newData[i].title;
-//         let author = newData[i].author;
-//         let developer = newData[i].developer;
-//         let dataDemo = new DataDemo({
-//             id,
-//             title,
-//             author,
-//             developer
-//         });
-//         dataDemo.save();
-//     }
-//     res.sendStatus(200);
-// });
+router.post('/courses', (req, res) => {
+    let {author, id, title, developer} = req.body;
+    let dataDemo = new DataDemo({
+        author, id, title, developer
+    });
+    dataDemo.save();
+    res.sendStatus(200);
+});
+
+router.patch('/courses/:id', (req, res) => {
+    let id = req.params.id;
+    let { title } = req.body;
+    console.log(title);
+    DataDemo.findOneAndUpdate({ id : id}, { $set: {
+        title
+    }}, {new:true}, (err) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.sendStatus(200);
+        }
+    });
+});
+
+router.delete('/courses/:id', (req, res) => {
+    let id = req.params.id;
+    DataDemo.findOneAndDelete({id : id}, (err) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.sendStatus(200);
+        }
+    })
+});
 
 module.exports = router;
