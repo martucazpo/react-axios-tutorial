@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import API from './utils/API';
@@ -8,9 +8,11 @@ function App() {
 
   const [data, setData] = useState([]);
 
-  API.getData().then(
+  useEffect(() => {
+    API.getData().then(
     data =>  setData(data.data)
   ).catch(err => console.log(err));
+  });
   
   return (
     <div className="App">
